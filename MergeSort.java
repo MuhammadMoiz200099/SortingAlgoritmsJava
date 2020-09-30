@@ -14,66 +14,60 @@ class MergeSort implements SortAlgorithm {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends Comparable<T>> T[] sort(T[] unsorted) {
-        T[] tmp = (T[]) new Comparable[unsorted.length];
-        doSort(unsorted, tmp, 0, unsorted.length - 1);
-        return unsorted;
-    }
-
-    private  static <T extends Comparable<T>> void doSort(T[] arr, T[] temp, int left, int right) {
-        if (left < right) {
-            int mid = left + (right - left) / 2;
-            doSort(arr, temp, left, mid);
-            doSort(arr,  temp,mid + 1, right);
-            merge(arr, temp, left, mid, right);
-        }
-
-    }
-
-
-    private static <T extends Comparable<T>> void merge(T[] arr, T[] temp, int left, int mid, int right) {
-        System.arraycopy(arr, left, temp, left, right - left + 1);
-
-
-        int i= left;
-        int j = mid + 1;
-        int k = left;
-
-        while (i <= mid && j <= right) {
-            if (temp[i].compareTo(temp[j]) <= 0) {
-                arr[k] = temp[i];
-                i++;
-            }
-            else {
-                arr[k] = temp[j];
-                j++;
-            }
-            k++;
-        }
-
-        while (i <= mid) {
-            arr[k] = temp[i];
-            i++;
-            k++;
-        }
-
-	while (j <= right) {
-	    arr[k] = temp[j];
-	    j++;
-	    k++;
+public static void main(String[] args)
+	{
+		int[] arr = {10,45,100,20,5,2};
+		System.out.println("Unsorted Array:");
+		for(int i=0;i<arr.length;i++)
+			System.out.println(arr[i]);
+		sort(arr,0,arr.length-1);
+		System.out.println("Sorted Array:");
+		for(int i=0;i<arr.length;i++)
+			System.out.println(arr[i]);
 	}
-    }
-
-    public static void main(String[] args) {
-
-        Integer[] arr = {4, 23, 6, 78, 1, 54, 231, 9, 12};
-        MergeSort mergeSort = new MergeSort();
-        mergeSort.sort(arr);
-
-        print(arr);
-
-        String[] stringArray = {"c", "a", "e", "b","d"};
-        mergeSort.sort(stringArray);
-        print(stringArray);
-    }
+	public static void sort(int[] arr,int l,int h)
+	{
+		int m;
+		if(l<h){
+			m=(l+h)/2;
+			sort(arr,l,m);
+			sort(arr,m+1,h);
+			merge(arr,l,m,h);
+		}
+	}
+	public static void merge(int[] arr,int l,int m,int h)
+	{
+		int n1=(m-l+1);
+		int n2=(h-m);
+		int[] L = new int[n1];
+		int[] R = new int[n2];
+		for(int i=0;i<n1;i++)
+			L[i]=arr[l+i];
+		for(int i=0;i<n2;i++)
+			R[i]=arr[m+1+i];
+		int i=0,j=0;
+		int k=l;
+		while(i<n1 && j<n2){
+			if(L[i]<=R[j]){
+				arr[k]=L[i];
+				k++;
+				i++;
+			}
+			else{
+				arr[k]=R[j];
+				k++;
+				j++;
+			}	
+		}
+		while(i<n1){
+			arr[k]=L[i];
+			i++;
+			k++;
+		}
+		while(j<n2){
+			arr[k]=R[j];
+			j++;
+			k++;
+		}
+	}
 }
